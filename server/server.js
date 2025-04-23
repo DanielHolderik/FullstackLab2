@@ -3,6 +3,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const cors = require('cors');
+const Employe = require('./database/employes.js');
+const Project = require('./database/project.js');
+const ProjectAssigment = require('./database/projectassigment.js');
+const open = require('open').default;
 
 const server = express();
 server.use(express.json());
@@ -19,7 +23,36 @@ mongoose.connect(CONNECTION_URL,{useNewUrlParser: true, useUnifiedTopology: true
     console.error("connection to DB failed!", err);
 });
 
+//GET APIs all
+server.get('/api/employes', async (req, res) => {
+try{
+  const allEmployes = await Employe.find();
+  res.status(200).json(allEmployes);
+}
+catch (err){
+  res.status(500).json({message: "error retrieving employes (GET)" + err.message});
+}
+});
 
+server.get('/api/projects', async (req, res) => {
+  try{
+    const allProjects = await Project.find();
+    res.status(200).json(allProjects);
+  }
+  catch (err){
+    res.status(500).json({message: "error retrieving projects (GET)" + err.message});
+  }
+});
+
+server.get('/api/projectassigments', async (req, res) => {
+  try{
+    const allProjectsAssigments = await Project.find();
+    res.status(200).json(allProjectsAssigments);
+  }
+  catch (err){
+    res.status(500).json({message: "error retrieving Projects Assigments (GET)" + err.message});
+  }
+});
 
 
 
