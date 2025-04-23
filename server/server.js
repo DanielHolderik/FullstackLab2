@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+require('dotenv').config();
 const cors = require('cors');
 
 const server = express();
@@ -30,7 +30,7 @@ mongoose.connect(CONNECTION_URL,{useNewUrlParser: true, useUnifiedTopology: true
 server.get('/', (req, res) => {
   res.send("server is running");
 });
-
-server.listen(prompt, () => {
-  console.log(`Server is running on port ${prompt}`);
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
