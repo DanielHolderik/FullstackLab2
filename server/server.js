@@ -54,8 +54,82 @@ server.get('/api/projectassigments', async (req, res) => {
   }
 });
 
+//POST APIs
+server.post('/api/employes', async (req, res) => {
+console.log("POST /api/employes callled"); //debug
 
+//check for uniqueness 
+try{
+  const existingEmploye = await Employe.findOne({employeId: req.body.employeId});
+  if (existingEmploye){
+    return res.status(400).json({message: "error: id already exists"});
+  }
 
+  const newEmploye = new Employe({
+    employeId: req.body.employeId,
+    name: req.body.name,
+    email: req.body.email,
+    hashedPass: req.body.hashedPass
+  });
+  await newEmploye.save();
+  res.status(201).json(newEmploye);
+  console.log("new employe created: ", newEmploye); //debug
+}
+catch (err){
+  res.status(500).json({message: "error creating new employe (POST)" + err.message});
+}
+});
+
+server.post('/api/projects', async (req, res) => {
+  console.log("POST /api/projects callled"); //debug
+
+  //check for uniqueness
+  try{
+    const existingProject = await Project.findOne({projectId: req.body.projectId});
+    if (existingProject){
+      return res.status(400).json({message: "error: projectid already exists"});
+    }
+    const newProject = new Project({
+      projectId: req.body.projectId,
+      name: req.body.name,
+      description: req.body.description
+    });
+    await newProject.save();
+    res.status(201).json(newProject);
+    console.log("new project created: ", newProject); //debug
+  }
+    catch (err){
+      res.status(500).json({message: "error creating new project (POST)" + err.message});
+    } 
+});
+
+server.post('/api/projectassigments', async (req, res) => {
+  console.log("POST /api/projectassigments callled"); //debug
+
+  //check if emplyee and project exist
+  try{
+    const existingEmploye = await Employe.findOne({employeId: req.body.employeId});
+    const existingProject = await Project.findOne({projectId: req.body.projectId});
+    const exist = existingEmploye && existingProject;
+
+    if (!exist){
+      return res.status(400).json({message: "error: employee or project doesnot exist"});
+    }
+
+    const newProjectAssigment = new ProjectAssigment({
+      employeId: req.body.employeId,
+      projectId: req.body.projectId,
+      startDate: req.body.startDate
+    })
+    await newProjectAssigment.save();
+    res.status(201).json(newProjectAssigment);
+    console.log("new project assigment created: ", newProjectAssigment); //debug
+  } 
+  catch (err){
+    res.status(500).json({message: "error creating new project assigment (POST)" + err.message});
+    
+  }
+});
 
 
 
