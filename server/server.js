@@ -3,9 +3,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const cors = require('cors');
-const Employe = require('./database/employes.js');
-const Project = require('./database/project.js');
-const ProjectAssigment = require('./database/projectassigment.js');
+const path = require('path');
+
+const Employe = require('../database/employes.js');
+const Project = require('../database/project.js');
+const ProjectAssigment = require('../database/projectassigment.js');
 const open = require('open').default;
 
 const server = express();
