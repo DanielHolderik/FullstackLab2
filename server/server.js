@@ -6,9 +6,9 @@ const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
 
-const Employe = require('./database/employes,js');
-const Project = require('./database/project.js');
-const ProjectAssigment = require('./database/projectassigment.js');
+const Employe = require('../database/employes.js');
+const Project = require('../database/project.js');
+const ProjectAssigment = require('../database/projectassigment.js');
 const open = require('open').default;
 
 const server = express();

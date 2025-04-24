@@ -6,3 +6,6 @@ const assigmentSchema = new mongoose.Schema({
     projectId: { type: mongoose.Schema.Types.ObjectId, ref: 'Project', required: true },
     startDate: { type: Date, required: true },
 });
+
+const ProjectAssigment = mongoose.model('Employe', assigmentSchema);
+module.exports = ProjectAssigment;

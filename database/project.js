@@ -5,4 +5,5 @@ const projectSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String},
 });
-module.exports = mongoose.model('Project', projectSchema);
+const Project = mongoose.model('Employe', projectSchema);
+module.exports = Project;
