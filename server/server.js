@@ -11,13 +11,14 @@ const ProjectAssigment = require('../database/projectassigment.js');
 const open = require('open').default;
 
 const server = express();
+const{CONNECTION_URL} = process.env;
 server.use(express.json());
 server.use(cors());
 const bodyParser = require('body-parser');
 
 //connect to DB
 const{CONNECTION_URL} = process.env;
-mongoose.connect(CONNECTION_URL,{useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(CONNECTION_URL,{useNewUrlParser: true, useUnifiedTopology: true, connectTimeoutMS: 20000, socketTimeoutMS: 20000}) 
 .then(() =>{
     console.log('connected to DB \n');
     console.log('conncted to: ', CONNECTION_URL);
@@ -25,17 +26,17 @@ mongoose.connect(CONNECTION_URL,{useNewUrlParser: true, useUnifiedTopology: true
     console.error("connection to DB failed!", err);
 });
 
-//debug only
-mongoose.connection.once('open', async () => {
-  console.log('Connected to MongoDB');
+// //debug only
+// mongoose.connection.once('open', async () => {
+//   console.log('Connected to MongoDB');
 
-  try {
-    const result = await Employe.findOne({});
-    console.log("Test fetch result:", result || "No documents found");
-  } catch (err) {
-    console.error("Error fetching from DB:", err);
-  }
-});
+//   try {
+//     const result = await Employe.findOne({});
+//     console.log("Test fetch result:", result || "No documents found");
+//   } catch (err) {
+//     console.error("Error fetching from DB:", err);
+//   }
+// });
 //GET APIs all
 server.get('/api/employes', async (req, res) => {
 try{
