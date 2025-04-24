@@ -25,6 +25,17 @@ mongoose.connect(CONNECTION_URL,{useNewUrlParser: true, useUnifiedTopology: true
     console.error("connection to DB failed!", err);
 });
 
+//debug only
+mongoose.connection.once('open', async () => {
+  console.log('Connected to MongoDB');
+
+  try {
+    const result = await Employe.findOne({});
+    console.log("Test fetch result:", result || "No documents found");
+  } catch (err) {
+    console.error("Error fetching from DB:", err);
+  }
+});
 //GET APIs all
 server.get('/api/employes', async (req, res) => {
 try{
