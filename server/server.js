@@ -4,39 +4,36 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const cors = require('cors');
 const path = require('path');
+const bodyParser = require('body-parser');
 
-const Employe = require('../database/employes.js');
-const Project = require('../database/project.js');
-const ProjectAssigment = require('../database/projectassigment.js');
+const Employe = require('./database/employes,js');
+const Project = require('./database/project.js');
+const ProjectAssigment = require('./database/projectassigment.js');
 const open = require('open').default;
 
 const server = express();
-const{CONNECTION_URL} = process.env;
-server.use(express.json());
 server.use(cors());
-const bodyParser = require('body-parser');
+server.use(express.json());
+
 
 //connect to DB
 const{CONNECTION_URL} = process.env;
-mongoose.connect(CONNECTION_URL,{useNewUrlParser: true, useUnifiedTopology: true, connectTimeoutMS: 20000, socketTimeoutMS: 20000}) 
+console.log('→ DB URL:', CONNECTION_URL) //debug
+mongoose.connect(CONNECTION_URL,{useNewUrlParser: true, useUnifiedTopology: true}) 
 .then(() =>{
     console.log('connected to DB \n');
     console.log('conncted to: ', CONNECTION_URL);
 }).catch((err) =>{
     console.error("connection to DB failed!", err);
 });
+mongoose.connection //debug
+  .on('connecting', () => console.log('Mongoose connecting…'))
+  .on('connected',  () => console.log('Mongoose connected.'))
+  .on('open',       () => console.log('Mongoose connection open.'))
+  .on('error',      err => console.error('Mongoose error:', err))
+  .on('disconnected',() => console.log('Mongoose disconnected.'));
 
-// //debug only
-// mongoose.connection.once('open', async () => {
-//   console.log('Connected to MongoDB');
 
-//   try {
-//     const result = await Employe.findOne({});
-//     console.log("Test fetch result:", result || "No documents found");
-//   } catch (err) {
-//     console.error("Error fetching from DB:", err);
-//   }
-// });
 //GET APIs all
 server.get('/api/employes', async (req, res) => {
 try{
@@ -60,7 +57,7 @@ server.get('/api/projects', async (req, res) => {
 
 server.get('/api/projectassigments', async (req, res) => {
   try{
-    const allProjectsAssigments = await Project.find();
+    const allProjectsAssigments = await ProjectAssigment.find();
     res.status(200).json(allProjectsAssigments);
   }
   catch (err){
@@ -70,7 +67,7 @@ server.get('/api/projectassigments', async (req, res) => {
 
 //POST APIs
 server.post('/api/employes', async (req, res) => {
-console.log("POST /api/employes callled"); //debug
+console.log("POST /api/employes callled", req.body); //debug
 
 //check for uniqueness 
 try{

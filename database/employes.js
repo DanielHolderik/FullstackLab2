@@ -6,4 +6,6 @@ const employeSchema = new mongoose.Schema({
     email: { type: String, required: true},
     hashedPass: String,
 });
-module.exports = mongoose.model('Employe', employeSchema);
+
+const Employe = mongoose.model('Employe', employeSchema);
+module.exports = Employe;

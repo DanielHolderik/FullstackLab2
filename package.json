@@ -1,11 +1,11 @@
 {
   "name": "fullstacklab2",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "nodemon server/index.js",
+    "server": "cd server && npm start",
     "client": "cd client && npm run dev"
   },
   "repository": {
@@ -22,5 +22,8 @@
   "description": "",
   "devDependencies": {
     "concurrently": "^9.1.2"
+  },
+  "dependencies": {
+    "mongo": "^0.1.0"
   }
 }
