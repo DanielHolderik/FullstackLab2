@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config();
 const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -19,12 +18,19 @@ server.use(express.json());
 //connect to DB
 const{CONNECTION_URL} = process.env;
 console.log('→ DB URL:', CONNECTION_URL) //debug
-mongoose.connect(CONNECTION_URL,{useNewUrlParser: true, useUnifiedTopology: true}) 
+mongoose.connect(CONNECTION_URL) 
 .then(() =>{
     console.log('connected to DB \n');
     console.log('conncted to: ', CONNECTION_URL);
 }).catch((err) =>{
     console.error("connection to DB failed!", err);
+});
+
+mongoose.set("strictQuery", false);
+mongoose.set("debug", true); // shows queries
+mongoose.connect(CONNECTION_URL, {
+  serverSelectionTimeoutMS: 60000,
+  socketTimeoutMS: 60000,
 });
 mongoose.connection //debug
   .on('connecting', () => console.log('Mongoose connecting…'))
@@ -32,7 +38,7 @@ mongoose.connection //debug
   .on('open',       () => console.log('Mongoose connection open.'))
   .on('error',      err => console.error('Mongoose error:', err))
   .on('disconnected',() => console.log('Mongoose disconnected.'));
-
+  
 
 //GET APIs all
 server.get('/api/employes', async (req, res) => {
@@ -148,7 +154,6 @@ server.post('/api/projectassigments', async (req, res) => {
 server.get('/', (req, res) => {
   res.send("server is running");
 });
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+server.listen(5000, () => {
+  console.log(`------------------  \nserver running on port 5000  \n`);
 });

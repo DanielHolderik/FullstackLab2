@@ -5,7 +5,9 @@ const employeSchema = new mongoose.Schema({
     name: { type: String, required: true},
     email: { type: String, required: true},
     hashedPass: String,
-});
+ }, { collection: "employes"});
 
-const Employe = mongoose.model('Employe', employeSchema);
+const Employe = mongoose.models.Employe || mongoose.model('Employe', employeSchema);
 module.exports = Employe;
+
+console.log("Model points to:", Employe.collection.name);
